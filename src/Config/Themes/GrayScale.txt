@@ -1,0 +1,4 @@
+BtnIdle 194 194 194 255
+BtnHover 146 146 146 255
+BtnActive 97 97 97 255
+Shadow 49 49 49 255
