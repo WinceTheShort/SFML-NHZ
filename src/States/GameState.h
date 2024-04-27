@@ -7,6 +7,7 @@
 
 #include "State.h"
 #include "../Button.h"
+#include "../Slider.h"
 
 struct Difficulty{
     int width, height, bombNum;

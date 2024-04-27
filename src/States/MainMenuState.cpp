@@ -24,6 +24,7 @@ void MainMenuState::initButtons() {
     this->buttons["EXIT_STATE"] = new Button(100, 100, 150, 50, 10, &this->font, "QUIT",30, &this->colorThemes.at(activeTheme));
     this->buttons["GAME_STATE"] = new Button(100, 200, 150, 50, 10, &this->font, "GAME",30, &this->colorThemes.at(activeTheme));
 
+    this->sliders["SLIDER"] = new Slider(300, 500, 150, &font, "Test1", 30, &this->colorThemes.at(activeTheme), 20, 40);
 }
 
 MainMenuState::MainMenuState(sf::RenderWindow *window, std::map<std::string, int> *supportedKeys, std::stack<State*>* states)
@@ -45,6 +46,11 @@ MainMenuState::~MainMenuState() {
     for (it = this->buttons.begin(); it != this->buttons.end(); ++it){
         it->second;
     }
+
+    auto it2 = this->sliders.begin();
+    for (it2 = this->sliders.begin(); it2 != this->sliders.end(); ++it2){
+        it->second;
+    }
 }
 
 void MainMenuState::endState() {
@@ -57,6 +63,9 @@ void MainMenuState::updateInput(const float &dt) {
 
 void MainMenuState::updateButtons() { //Updates and handles buttons
     for(auto &it : this->buttons)
+        it.second->update(this->mousePosView);
+
+    for(auto &it : this->sliders)
         it.second->update(this->mousePosView);
 
     if (this->buttons["EXIT_STATE"]->isPressed())
@@ -74,6 +83,8 @@ void MainMenuState::update(const float &dt) {
 
 void MainMenuState::renderButtons(sf::RenderTarget *target) {
     for(auto &it : this->buttons)
+        it.second->render(target);
+    for(auto &it : this->sliders)
         it.second->render(target);
 }
 

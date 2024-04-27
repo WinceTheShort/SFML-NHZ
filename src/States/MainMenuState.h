@@ -17,6 +17,8 @@ private:
 
 
     std::map<std::string, Button*> buttons;
+    std::map<std::string, Slider*> sliders;
+
     //Functions
     void initFonts();
     void initKeybinds();

@@ -32,7 +32,7 @@ State::~State() {
 
 }
 
-const bool State::getQuit() const {
+bool State::getQuit() const {
     return this->quit;
 }
 
