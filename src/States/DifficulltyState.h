@@ -6,7 +6,7 @@
 #define SFML_NHZ_DIFFICULLTYSTATE_H
 
 #include "State.h"
-#include "GameState.h"
+#include "CustomState.h"
 
 
 class DifficulltyState : public State{
@@ -17,7 +17,6 @@ private:
     sf::Sprite backgroundBorder;
 
     std::map<std::string, Difficulty*> difficulties;
-    std::map<std::string, Button*> buttons;
 
     //Functions
     void initFonts();
@@ -37,7 +36,6 @@ public:
     void updateInput(const float& dt);
     void updateButtons();
     void update(const float& dt);
-    void renderButtons(sf::RenderTarget* target = nullptr);
     void render(sf::RenderTarget* target = nullptr);
 };
 

@@ -6,7 +6,7 @@
 
 Button::Button(float x, float y, float width, float height,float outlineThickness,
                sf::Font* font, std::string text, int fontSize,
-               std::map<std::string, sf::Color>* theme, float shadowSize) {
+               std::map<std::string, sf::Color>* theme, float shadowSize, float textShadowSize) {
     this->buttonState = 0;
 
     this->shape.setSize(sf::Vector2f(width, height));
@@ -24,11 +24,11 @@ Button::Button(float x, float y, float width, float height,float outlineThicknes
     this->text.setPosition(sf::Vector2f(this->shape.getPosition().x + this->shape.getSize().x/2 - this->text.getGlobalBounds().width/2,
                                         this->shape.getPosition().y + this->shape.getSize().y/2 - this->text.getGlobalBounds().height/2));
 
-    /*extShadow.setFont(*this->font);
+    textShadow.setFont(*this->font);
     textShadow.setCharacterSize(fontSize);
     textShadow.setString(text);
     textShadow.setFillColor(theme->at("Shadow"));
-    textShadow.setPosition(this->text.getPosition().x + 6, this->text.getPosition().y + 6);*/
+    textShadow.setPosition(sf::Vector2f(this->text.getPosition().x + textShadowSize, this->text.getPosition().y + textShadowSize));
 
     this->shadowSize = shadowSize;
     if(this->shadowSize != 0){
@@ -74,7 +74,7 @@ void Button::render(sf::RenderTarget *target) {
     }
 
     target->draw(this->shape);
-    /*target->draw(this->textShadow);*/
+    target->draw(this->textShadow);
     target->draw(this->text);
 }
 

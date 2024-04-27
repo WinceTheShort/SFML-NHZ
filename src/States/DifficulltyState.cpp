@@ -38,7 +38,10 @@ void DifficulltyState::initDifficulty() {
         std::string Diff;
         int w, h, b;
         while (file >> Diff >> w >> h >> b) {
-            this->difficulties[Diff] = new Difficulty[w, h, b];
+            this->difficulties[Diff] = new Difficulty;
+            difficulties.at(Diff)->width = w;
+            difficulties.at(Diff)->height = h;
+            difficulties.at(Diff)->bombNum = b;
         }
     }
 }
@@ -93,6 +96,7 @@ void DifficulltyState::updateButtons() { //Updates and handles buttons
         this->states->push(new GameState(this->window, this->supportedKeys, this->states, difficulties.at("HARD")));
     }
     if (this->buttons["CUSTOM"]->isPressed()){
+        this->states->push(new CustomState(this->window, this->supportedKeys, this->states));
     }
 }
 
@@ -100,11 +104,6 @@ void DifficulltyState::update(const float &dt) {
     this->updateMousePositions();
     this->updateButtons();
     this->updateInput(dt);
-}
-
-void DifficulltyState::renderButtons(sf::RenderTarget *target) {
-    for(auto &it : this->buttons)
-        it.second->render(target);
 }
 
 void DifficulltyState::render(sf::RenderTarget *target) {

@@ -29,7 +29,7 @@ private:
     sf::RectangleShape shadow;
     sf::Font* font;
     sf::Text text;
-    /*sf::Text textShadow;*/
+    sf::Text textShadow;
     float shadowSize;
 
     std::map<std::string, sf::Color>* theme;
@@ -37,7 +37,7 @@ private:
 public:
     Button(float x, float y, float width, float height,float outlineThickness,
             sf::Font* font, std::string text, int fontSize,
-           std::map<std::string, sf::Color>* theme, float shadowSize = 0);
+           std::map<std::string, sf::Color>* theme, float shadowSize = 0, float textShadowSize = 0);
     ~Button();
 
     //Accessors

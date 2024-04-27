@@ -23,14 +23,19 @@ void GameState::initKeybinds() {
 void GameState::initButtons() {
     this->buttons["EXIT_STATE"] = new Button(100, 100, 150, 50, 10, &this->font, "BACK",12, &this->colorThemes.at(activeTheme));
     this->buttons["GAME_STATE"] = new Button(100, 200, 150, 50, 10, &this->font, "NEXT",10,  &this->colorThemes.at(activeTheme));
-
 }
 
 GameState::GameState(sf::RenderWindow *window, std::map<std::string, int> *supportedKeys, std::stack<State*>* states, Difficulty *difficulty)
-: State(window, supportedKeys, states), currentDifficulty (difficulty){
+: State(window, supportedKeys, states), currentDifficulty (difficulty) {
     this->initFonts();
     this->initKeybinds();
     this->initButtons();
+
+    correctFlag = 0;
+    wrongFlag = 0;
+
+    this->backgroundColor.setFillColor(colorThemes.at(activeTheme).at("BtnActive"));
+    this->backgroundColor.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
 }
 
 GameState::~GameState() {
@@ -65,13 +70,22 @@ void GameState::update(const float &dt) {
     this->updateInput(dt);
 }
 
-void GameState::renderButtons(sf::RenderTarget *target) {
-    for(auto &it : this->buttons)
-        it.second->render(target);
-}
-
 void GameState::render(sf::RenderTarget *target) {
     if (!target)
         target= this->window;
+
+    target->draw(backgroundColor);
     this->renderButtons(target);
+
+    //Debug
+    std::stringstream ss;
+    ss << "Columns: " << currentDifficulty->width << "\n"
+    << "Rows: " << currentDifficulty->height << "\n"
+    << "Bombs: " << currentDifficulty->bombNum;
+    sf::Text text;
+    text.setString(ss.str());
+    text.setFont(font);
+    text.setCharacterSize(20);
+    target->draw(text);
+
 }

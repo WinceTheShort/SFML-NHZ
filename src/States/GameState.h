@@ -6,8 +6,7 @@
 #define SFML_NHZ_GAMESTATE_H
 
 #include "State.h"
-#include "../Button.h"
-#include "../Slider.h"
+
 
 struct Difficulty{
     int width, height, bombNum;
@@ -16,9 +15,9 @@ struct Difficulty{
 class GameState : public State{
 private:
     //Variables
+    sf::RectangleShape backgroundColor;
     int correctFlag, wrongFlag;
     Difficulty *currentDifficulty;
-    std::map<std::string, Button*> buttons;
     sf::Font font;
 
     //Functions
@@ -36,7 +35,6 @@ public:
     void updateInput(const float& dt);
     void updateButtons();
     void update(const float& dt);
-    void renderButtons(sf::RenderTarget* target = nullptr);
     void render(sf::RenderTarget* target = nullptr);
 };
 

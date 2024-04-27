@@ -21,6 +21,9 @@
 #include "SFML/Audio.hpp"
 #include "SFML/Network.hpp"
 
+#include "../Button.h"
+#include "../Slider.h"
+
 class State {
 protected:
     std::stack<State*>* states;
@@ -29,6 +32,10 @@ protected:
     std::map<std::string, int> keybinds;
     std::map<std::string, std::map<std::string, sf::Color>> colorThemes;
     std::string activeTheme;
+    sf::Font font;
+
+    std::map<std::string, Button*> buttons;
+    std::map<std::string, Slider*> sliders;
 
     bool quit;
 
@@ -57,6 +64,8 @@ public:
     virtual void updateMousePositions();
     virtual void updateInput(const float& dt) = 0;
     virtual void update(const float& dt) = 0;
+    void renderButtons(sf::RenderTarget *target);
+    void renderSliders(sf::RenderTarget *target);
     virtual void render(sf::RenderTarget* target = nullptr) = 0;
 };
 
