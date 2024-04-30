@@ -7,7 +7,7 @@
 
 #include "DifficulltyState.h"
 
-class MainMenuState : public State{
+class MainMenuState : public iButton{
 private:
     //Variables
     sf::RectangleShape backgroundColor;
@@ -26,7 +26,7 @@ public:
     void endState();
 
     void updateInput(const float& dt);
-    void updateButtons();
+    void handleButtons();
     void update(const float& dt);
     void render(sf::RenderTarget* target = nullptr);
 };

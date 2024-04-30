@@ -36,12 +36,9 @@ void DifficulltyState::initDifficulty() {
 
     if (file.is_open()){        //Grayscale
         std::string Diff;
-        int w, h, b;
-        while (file >> Diff >> w >> h >> b) {
-            this->difficulties[Diff] = new Difficulty;
-            difficulties.at(Diff)->width = w;
-            difficulties.at(Diff)->height = h;
-            difficulties.at(Diff)->bombNum = b;
+        int c, r, b;
+        while (file >> Diff >> c >> r >> b) {
+            this->difficulties[Diff] = new Difficulty(c,r,b);
         }
     }
 }
@@ -62,10 +59,7 @@ DifficulltyState::DifficulltyState(sf::RenderWindow *window, std::map<std::strin
 
 //Destructor
 DifficulltyState::~DifficulltyState() {
-    auto it = this->buttons.begin();
-    for (it = this->buttons.begin(); it != this->buttons.end(); ++it){
-        it->second;
-    }
+    deleteButtons();
     auto it2 = this->difficulties.begin();
     for (it2 = this->difficulties.begin(); it2 != this->difficulties.end(); ++it2){
         it2->second;
@@ -80,11 +74,8 @@ void DifficulltyState::updateInput(const float &dt) {
     this->checkForQuit();
 }
 
-void DifficulltyState::updateButtons() { //Updates and handles buttons
-    for(auto &it : this->buttons)
-        it.second->update(this->mousePosView);
-
-    if (this->buttons["BACK"]->isPressed())
+void DifficulltyState::handleButtons() { //Updates and handles buttons
+        if (this->buttons["BACK"]->isPressed())
         this->quit = true;
     if (this->buttons["EASY"]->isPressed()){
         this->states->push(new GameState(this->window, this->supportedKeys, this->states, difficulties.at("EASY")));

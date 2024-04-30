@@ -2,7 +2,7 @@
 // Created by wince on 2024. 04. 27..
 //
 
-#include "CustomState.h"
+#include "CustomDiffState.h"
 
 void CustomState::initFonts() {
     this->font.loadFromFile("../../src/Resources/minepixel.ttf");
@@ -40,6 +40,7 @@ CustomState::CustomState(sf::RenderWindow *window, std::map<std::string, int> *s
     this->initKeybinds();
     this->initButtons();
     this->initSliders();
+    customDif = nullptr;
 
     this->backgroundColor.setFillColor(colorThemes.at(activeTheme).at("BtnActive"));
     this->backgroundColor.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
@@ -49,14 +50,8 @@ CustomState::CustomState(sf::RenderWindow *window, std::map<std::string, int> *s
 }
 
 CustomState::~CustomState() {
-    auto it = this->buttons.begin();
-    for (it = this->buttons.begin(); it != this->buttons.end(); ++it){
-        it->second;
-    }
-    auto it2 = this->sliders.begin();
-    for (it2 = this->sliders.begin(); it2 != this->sliders.end(); ++it2){
-        it->second;
-    }
+    deleteButtons();
+    deleteSliders();
     delete customDif;
 }
 
@@ -68,25 +63,16 @@ void CustomState::updateInput(const float &dt) {
     this->checkForQuit();
 }
 
-void CustomState::updateButtons() {
-    for(auto &it : this->buttons)
-        it.second->update(this->mousePosView);
-
+void CustomState::handleButtons() {
     if (this->buttons["BACK"]->isPressed())
         this->quit = true;
     if (this->buttons["START"]->isPressed()){
-        customDif = new Difficulty;
-        customDif->width = sliders.at("COLUMNS")->getValue();
-        customDif->height = sliders.at("ROWS")->getValue();
-        customDif->bombNum = sliders.at("BOMBS")->getValue();
+        customDif = new Difficulty(sliders.at("COLUMNS")->getValue(),sliders.at("ROWS")->getValue(),sliders.at("BOMBS")->getValue());
         this->states->push(new GameState(this->window, this->supportedKeys, this->states, customDif));
     }
 }
 
-void CustomState::updateSliders() {
-    for(auto &it : this->sliders)
-        it.second->update(this->mousePosView);
-}
+void CustomState::handleSliders() {}
 
 void CustomState::update(const float &dt) {
     this->updateMousePositions();

@@ -5,14 +5,10 @@
 #ifndef SFML_NHZ_GAMESTATE_H
 #define SFML_NHZ_GAMESTATE_H
 
-#include "State.h"
+#include "StateInterfaces.hpp"
 
 
-struct Difficulty{
-    int width, height, bombNum;
-};
-
-class GameState : public State{
+class GameState : public iButton{
 private:
     //Variables
     sf::RectangleShape backgroundColor;
@@ -33,7 +29,7 @@ public:
 
 
     void updateInput(const float& dt);
-    void updateButtons();
+    void handleButtons();
     void update(const float& dt);
     void render(sf::RenderTarget* target = nullptr);
 };

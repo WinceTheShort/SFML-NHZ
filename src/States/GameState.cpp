@@ -39,10 +39,7 @@ GameState::GameState(sf::RenderWindow *window, std::map<std::string, int> *suppo
 }
 
 GameState::~GameState() {
-    auto it = this->buttons.begin();
-    for (it = this->buttons.begin(); it != this->buttons.end(); ++it){
-        it->second;
-    }
+    deleteButtons();
 }
 
 void GameState::endState() {
@@ -53,10 +50,7 @@ void GameState::updateInput(const float &dt) {
     this->checkForQuit();
 }
 
-void GameState::updateButtons() { //Updates and handles buttons
-    for(auto &it : this->buttons)
-        it.second->update(this->mousePosView);
-
+void GameState::handleButtons() { //Updates and handles buttons
     if (this->buttons["EXIT_STATE"]->isPressed())
         this->quit = true;
     if (this->buttons["GAME_STATE"]->isPressed()){
@@ -79,9 +73,9 @@ void GameState::render(sf::RenderTarget *target) {
 
     //Debug
     std::stringstream ss;
-    ss << "Columns: " << currentDifficulty->width << "\n"
-    << "Rows: " << currentDifficulty->height << "\n"
-    << "Bombs: " << currentDifficulty->bombNum;
+    ss << "Columns: " << currentDifficulty->columns << "\n"
+    << "Rows: " << currentDifficulty->rows << "\n"
+    << "Bombs: " << currentDifficulty->bombs;
     sf::Text text;
     text.setString(ss.str());
     text.setFont(font);

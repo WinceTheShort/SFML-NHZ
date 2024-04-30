@@ -34,9 +34,6 @@ protected:
     std::string activeTheme;
     sf::Font font;
 
-    std::map<std::string, Button*> buttons;
-    std::map<std::string, Slider*> sliders;
-
     bool quit;
 
     sf::Vector2i mousePosScreen;
@@ -64,8 +61,6 @@ public:
     virtual void updateMousePositions();
     virtual void updateInput(const float& dt) = 0;
     virtual void update(const float& dt) = 0;
-    void renderButtons(sf::RenderTarget *target);
-    void renderSliders(sf::RenderTarget *target);
     virtual void render(sf::RenderTarget* target = nullptr) = 0;
 };
 

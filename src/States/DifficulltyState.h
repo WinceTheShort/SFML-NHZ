@@ -5,11 +5,10 @@
 #ifndef SFML_NHZ_DIFFICULLTYSTATE_H
 #define SFML_NHZ_DIFFICULLTYSTATE_H
 
-#include "State.h"
-#include "CustomState.h"
+#include "CustomDiffState.h"
 
 
-class DifficulltyState : public State{
+class DifficulltyState : public iButton{
 private:
     sf::RectangleShape backgroundColor;
     sf::Font font;
@@ -33,10 +32,10 @@ public:
     void endState();
 
 
-    void updateInput(const float& dt);
-    void updateButtons();
-    void update(const float& dt);
-    void render(sf::RenderTarget* target = nullptr);
+    void updateInput(const float& dt) override;
+    void handleButtons() override;
+    void update(const float& dt) override;
+    void render(sf::RenderTarget* target = nullptr) override;
 };
 
 

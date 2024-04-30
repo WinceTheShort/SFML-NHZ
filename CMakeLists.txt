@@ -32,9 +32,12 @@ add_executable(CMakeSFMLProject src/main.cpp
         src/Slider.cpp
         src/Slider.h
         src/Slider.h
-        src/States/CustomState.cpp
-        src/States/CustomState.h
-        src/States/CustomState.h)
+        src/States/CustomDiffState.cpp
+        src/States/CustomDiffState.h
+        src/States/CustomDiffState.h
+        src/States/StateInterfaces.hpp
+        src/States/StateInterfaces.hpp
+        src/States/StateInterfaces.hpp)
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics)
 target_compile_features(CMakeSFMLProject PRIVATE cxx_std_17)
 

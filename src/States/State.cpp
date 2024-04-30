@@ -45,16 +45,8 @@ void State::updateMousePositions() {
     this->mousePosScreen = sf::Mouse::getPosition();
     this->mousePosWindow = sf::Mouse::getPosition(*this->window);
     this->mousePosView = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
-
-
 }
 
-void State::renderButtons(sf::RenderTarget *target) {
-    for(auto &it : this->buttons)
-        it.second->render(target);
-}
 
-void State::renderSliders(sf::RenderTarget *target) {
-    for(auto &it : this->sliders)
-        it.second->render(target);
-}
+
+

@@ -42,10 +42,7 @@ MainMenuState::MainMenuState(sf::RenderWindow *window, std::map<std::string, int
 }
 
 MainMenuState::~MainMenuState() {
-    auto it = this->buttons.begin();
-    for (it = this->buttons.begin(); it != this->buttons.end(); ++it){
-        it->second;
-    }
+    deleteButtons();
 }
 
 void MainMenuState::endState() {
@@ -56,10 +53,7 @@ void MainMenuState::updateInput(const float &dt) {
     this->checkForQuit();
 }
 
-void MainMenuState::updateButtons() { //Updates and handles buttons
-    for(auto &it : this->buttons)
-        it.second->update(this->mousePosView);
-
+void MainMenuState::handleButtons() { //Updates and handles buttons
     if (this->buttons["QUIT"]->isPressed())
         this->quit = true;
     if (this->buttons["PLAY"]->isPressed()){

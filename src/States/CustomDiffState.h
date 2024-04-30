@@ -2,12 +2,12 @@
 // Created by wince on 2024. 04. 27..
 //
 
-#ifndef SFML_NHZ_CUSTOMSTATE_H
-#define SFML_NHZ_CUSTOMSTATE_H
+#ifndef SFML_NHZ_CUSTOMDIFFSTATE_H
+#define SFML_NHZ_CUSTOMDIFFSTATE_H
 
 #include "GameState.h"
 
-class CustomState: public State{
+class CustomState: public iButton, public iSlider{
 private:
     sf::RectangleShape backgroundColor;
     sf::Font font;
@@ -28,11 +28,11 @@ public:
 
 
     void updateInput(const float& dt);
-    void updateButtons();
-    void updateSliders();
+    void handleButtons();
+    void handleSliders();
     void update(const float& dt);
     void render(sf::RenderTarget* target = nullptr);
 };
 
 
-#endif //SFML_NHZ_CUSTOMSTATE_H
+#endif //SFML_NHZ_CUSTOMDIFFSTATE_H
