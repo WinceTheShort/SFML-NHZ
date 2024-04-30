@@ -4,19 +4,19 @@
 cmake_minimum_required(VERSION 3.5)
 
 file(MAKE_DIRECTORY
-  "C:/Users/Vince/Desktop/Prog/SFML-NHZ/cmake-build-debug/_deps/sfml-src"
-  "C:/Users/Vince/Desktop/Prog/SFML-NHZ/cmake-build-debug/_deps/sfml-build"
-  "C:/Users/Vince/Desktop/Prog/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix"
-  "C:/Users/Vince/Desktop/Prog/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/tmp"
-  "C:/Users/Vince/Desktop/Prog/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp"
-  "C:/Users/Vince/Desktop/Prog/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/src"
-  "C:/Users/Vince/Desktop/Prog/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp"
+  "C:/Users/wince/CLionProjects/SFML/SFML-NHZ/cmake-build-debug/_deps/sfml-src"
+  "C:/Users/wince/CLionProjects/SFML/SFML-NHZ/cmake-build-debug/_deps/sfml-build"
+  "C:/Users/wince/CLionProjects/SFML/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix"
+  "C:/Users/wince/CLionProjects/SFML/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/tmp"
+  "C:/Users/wince/CLionProjects/SFML/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp"
+  "C:/Users/wince/CLionProjects/SFML/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/src"
+  "C:/Users/wince/CLionProjects/SFML/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "C:/Users/Vince/Desktop/Prog/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/${subDir}")
+    file(MAKE_DIRECTORY "C:/Users/wince/CLionProjects/SFML/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "C:/Users/Vince/Desktop/Prog/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "C:/Users/wince/CLionProjects/SFML/SFML-NHZ/cmake-build-debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp${cfgdir}") # cfgdir has leading slash
 endif()
