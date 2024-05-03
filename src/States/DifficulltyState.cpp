@@ -44,7 +44,8 @@ void DifficulltyState::initDifficulty() {
 }
 
 //Constructor
-DifficulltyState::DifficulltyState(sf::RenderWindow *window, std::map<std::string, int> *supportedKeys, std::stack<State*>* states)  : State(window, supportedKeys, states){
+DifficulltyState::DifficulltyState(sf::RenderWindow *window, std::map<std::string, int> *supportedKeys, std::stack<State*>* states)
+: State(window, supportedKeys, states){
     this->initFonts();
     this->initKeybinds();
     this->initButtons();
@@ -53,8 +54,11 @@ DifficulltyState::DifficulltyState(sf::RenderWindow *window, std::map<std::strin
     this->backgroundColor.setFillColor(colorThemes.at(activeTheme).at("BtnActive"));
     this->backgroundColor.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
 
-    this->texture.loadFromFile("../../src/Resources/MenuBorder.png");
-    this->backgroundBorder.setTexture(texture);
+    this->backgroundBorder.setSize(sf::Vector2f(backgroundColor.getSize().x - 40, backgroundColor.getSize().y - 40));
+    this->backgroundBorder.setPosition(20, 20);
+    this->backgroundBorder.setOutlineColor(sf::Color::Black);
+    this->backgroundBorder.setOutlineThickness(20);
+    this->backgroundBorder.setFillColor(sf::Color(0, 0, 0, 0));
 }
 
 //Destructor
@@ -70,7 +74,7 @@ void DifficulltyState::endState() {
 
 }
 
-void DifficulltyState::updateInput(const float &dt) {
+void DifficulltyState::handleInput(const float &dt) {
     this->checkForQuit();
 }
 
@@ -94,7 +98,7 @@ void DifficulltyState::handleButtons() { //Updates and handles buttons
 void DifficulltyState::update(const float &dt) {
     this->updateMousePositions();
     this->updateButtons();
-    this->updateInput(dt);
+    this->handleInput(dt);
 }
 
 void DifficulltyState::render(sf::RenderTarget *target) {
@@ -103,7 +107,11 @@ void DifficulltyState::render(sf::RenderTarget *target) {
 
     target->draw(backgroundColor);
     target->draw(backgroundBorder);
+
     this->renderButtons(target);
+
+    //Debug
+    renderDebug(target);
 }
 
 

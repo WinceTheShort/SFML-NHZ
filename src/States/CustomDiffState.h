@@ -10,9 +10,7 @@
 class CustomState: public iButton, public iSlider{
 private:
     sf::RectangleShape backgroundColor;
-    sf::Font font;
-    sf::Texture texture;
-    sf::Sprite backgroundBorder;
+    sf::RectangleShape backgroundBorder;
     Difficulty* customDif;
 
     void initFonts();
@@ -27,7 +25,7 @@ public:
     void endState();
 
 
-    void updateInput(const float& dt);
+    void handleInput(const float& dt);
     void handleButtons();
     void handleSliders();
     void update(const float& dt);

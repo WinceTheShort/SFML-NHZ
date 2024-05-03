@@ -25,7 +25,7 @@ public:
     //Functions
     void endState();
 
-    void updateInput(const float& dt);
+    void handleInput(const float& dt);
     void handleButtons();
     void update(const float& dt);
     void render(sf::RenderTarget* target = nullptr);

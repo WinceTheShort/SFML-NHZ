@@ -49,7 +49,7 @@ void MainMenuState::endState() {
 
 }
 
-void MainMenuState::updateInput(const float &dt) {
+void MainMenuState::handleInput(const float &dt) {
     this->checkForQuit();
 }
 
@@ -64,15 +64,19 @@ void MainMenuState::handleButtons() { //Updates and handles buttons
 void MainMenuState::update(const float &dt) {
     this->updateMousePositions();
     this->updateButtons();
-    this->updateInput(dt);
+    this->handleInput(dt);
 }
 
 void MainMenuState::render(sf::RenderTarget *target) {
     if (!target)
         target= this->window;
+
     target->draw(this->backgroundColor);
     target->draw(this->backgroundImage);
 
     this->renderButtons(target);
+
+    //Debug
+    renderDebug(target);
 }
 

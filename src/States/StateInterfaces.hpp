@@ -55,6 +55,7 @@ public:
     }
 };
 
+
 //Stores the games parameters
 class Difficulty{
 public:

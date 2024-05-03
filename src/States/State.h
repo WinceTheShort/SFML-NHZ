@@ -48,6 +48,7 @@ protected:
     //Functions
     virtual void initKeybinds() = 0;
 
+
 public:
 
     State(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
@@ -59,9 +60,32 @@ public:
 
     virtual void endState() = 0;
     virtual void updateMousePositions();
-    virtual void updateInput(const float& dt) = 0;
+    virtual void handleInput(const float& dt) = 0;
     virtual void update(const float& dt) = 0;
     virtual void render(sf::RenderTarget* target = nullptr) = 0;
+
+    //Debug: displays mouse cords
+    virtual void renderDebug(sf::RenderTarget* target){
+        std::stringstream ss;
+        sf::Text mousePosText;
+        sf::RectangleShape backdrop;
+        sf::Font debugFont;
+
+        debugFont.loadFromFile("../../src/Resources/minepixel.ttf");
+        ss << "Screen: " << mousePosScreen.x << ", " << mousePosScreen.y << "\n" <<
+        "Window: " << mousePosWindow.x << ", " << mousePosWindow.y << "\n" <<
+        "View: " << mousePosView.x << ", " << mousePosView.y;
+        mousePosText.setFont(font);
+        mousePosText.setString(ss.str());
+        mousePosText.setPosition(sf::Vector2f(20,20));
+        mousePosText.setCharacterSize(15);
+        mousePosText.setFillColor(sf::Color::Black);
+        backdrop.setSize(sf::Vector2f(300,200));
+        backdrop.setFillColor(sf::Color(255,255,255,100));
+
+        target->draw(backdrop);
+        target->draw(mousePosText);
+    }
 };
 
 

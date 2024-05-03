@@ -37,7 +37,10 @@ add_executable(CMakeSFMLProject src/main.cpp
         src/States/CustomDiffState.h
         src/States/StateInterfaces.hpp
         src/States/StateInterfaces.hpp
-        src/States/StateInterfaces.hpp)
+        src/States/StateInterfaces.hpp
+        src/States/EndGameState.cpp
+        src/States/EndGameState.h
+        src/States/EndGameState.h)
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics)
 target_compile_features(CMakeSFMLProject PRIVATE cxx_std_17)
 

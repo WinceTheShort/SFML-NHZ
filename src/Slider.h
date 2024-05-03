@@ -31,6 +31,7 @@ private:
     int value, min, max;
     std::stringstream ss;
     float sliderMaxX;
+    int sliderState;
 
     std::map<std::string, sf::Color>* theme;
 public:

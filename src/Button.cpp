@@ -6,8 +6,9 @@
 
 Button::Button(float x, float y, float width, float height,float outlineThickness,
                sf::Font* font, std::string text, int fontSize,
-               std::map<std::string, sf::Color>* theme, float shadowSize, float textShadowSize) {
+               std::map<std::string, sf::Color>* theme, float shadowSize, float textShadowSize){
     this->buttonState = 0;
+    this->buttonStateS = "BtnIdle";
 
     this->shape.setSize(sf::Vector2f(width, height));
     this->shape.setPosition(sf::Vector2f(x,y));
@@ -54,17 +55,29 @@ const bool Button::isPressed() const {
     return false;
 }
 
+
+
 void Button::update(const sf::Vector2f mousePos) {
-    this->buttonStateS = "BtnIdle";
-    this->buttonState = 0;
     if (this->shape.getGlobalBounds().contains(mousePos)){
         this->buttonStateS = "BtnHover";
-        this->buttonState = 1;
         if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             this->buttonStateS = "BtnActive";
+            this->buttonState = 1;
+        }
+    } else if (buttonState != 1){
+        this->buttonStateS = "BtnIdle";
+        this->buttonState = 0;
+    }
+
+    if (buttonState == 1 && !sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+        if (this->shape.getGlobalBounds().contains(mousePos))
             this->buttonState = 2;
+        else{
+            this->buttonStateS = "BtnIdle";
+            this->buttonState = 0;
         }
     }
+
     this->shape.setFillColor(this->theme->at(buttonStateS));
 }
 

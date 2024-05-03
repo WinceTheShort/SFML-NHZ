@@ -11,9 +11,7 @@
 class DifficulltyState : public iButton{
 private:
     sf::RectangleShape backgroundColor;
-    sf::Font font;
-    sf::Texture texture;
-    sf::Sprite backgroundBorder;
+    sf::RectangleShape backgroundBorder;
 
     std::map<std::string, Difficulty*> difficulties;
 
@@ -32,7 +30,7 @@ public:
     void endState();
 
 
-    void updateInput(const float& dt) override;
+    void handleInput(const float& dt) override;
     void handleButtons() override;
     void update(const float& dt) override;
     void render(sf::RenderTarget* target = nullptr) override;

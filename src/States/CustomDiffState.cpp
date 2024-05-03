@@ -27,8 +27,8 @@ void CustomState::initButtons() {
 }
 
 void CustomState::initSliders() {
-    this->sliders["COLUMNS"] = new Slider(860, 1000, 200, &font, "COLUMNS", 30, &colorThemes.at(activeTheme), 10, 100);
-    this->sliders["ROWS"] = new Slider(610, 1000, 200, &font, "ROWS", 30, &colorThemes.at(activeTheme), 10, 100);
+    this->sliders["COLUMNS"] = new Slider(860, 1000, 200, &font, "COLUMNS", 30, &colorThemes.at(activeTheme), 9, 185);
+    this->sliders["ROWS"] = new Slider(610, 1000, 200, &font, "ROWS", 30, &colorThemes.at(activeTheme), 9, 100);
     this->sliders["BOMBS"] = new Slider(1110, 1000, 200, &font, "BOMBS", 30, &colorThemes.at(activeTheme), 10, 100);
 
 
@@ -45,8 +45,11 @@ CustomState::CustomState(sf::RenderWindow *window, std::map<std::string, int> *s
     this->backgroundColor.setFillColor(colorThemes.at(activeTheme).at("BtnActive"));
     this->backgroundColor.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
 
-    this->texture.loadFromFile("../../src/Resources/MenuBorder.png");
-    this->backgroundBorder.setTexture(texture);
+    this->backgroundBorder.setSize(sf::Vector2f(backgroundColor.getSize().x - 40, backgroundColor.getSize().y - 40));
+    this->backgroundBorder.setPosition(20, 20);
+    this->backgroundBorder.setOutlineColor(sf::Color::Black);
+    this->backgroundBorder.setOutlineThickness(20);
+    this->backgroundBorder.setFillColor(sf::Color(0, 0, 0, 0));
 }
 
 CustomState::~CustomState() {
@@ -59,7 +62,7 @@ void CustomState::endState() {
 
 }
 
-void CustomState::updateInput(const float &dt) {
+void CustomState::handleInput(const float &dt) {
     this->checkForQuit();
 }
 
@@ -78,7 +81,7 @@ void CustomState::update(const float &dt) {
     this->updateMousePositions();
     this->updateButtons();
     this->updateSliders();
-    this->updateInput(dt);
+    this->handleInput(dt);
 }
 
 void CustomState::render(sf::RenderTarget *target) {
@@ -89,4 +92,7 @@ void CustomState::render(sf::RenderTarget *target) {
 
     renderButtons(target);
     renderSliders(target);
+
+    //Debug
+    renderDebug(target);
 }

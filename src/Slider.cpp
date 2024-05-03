@@ -12,6 +12,7 @@ Slider::Slider(float x, float y, float width, sf::Font *font, std::string text, 
     this->min = min;
     this->max = max;
     value = min;
+    sliderState = 0;
 
     area.setPosition(sf::Vector2f(x, y));
     area.setSize(sf::Vector2f(width, 10 * scale));
@@ -45,14 +46,36 @@ int Slider::getValue() {
 }
 
 void Slider::update(sf::Vector2f mousePos) {
-    slider.setFillColor(sf::Color::White);
+
+    if (area.getGlobalBounds().contains(mousePos) && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        slider.setPosition(mousePos.x - 5, slider.getPosition().y);
+
     if (slider.getGlobalBounds().contains(mousePos)){
         slider.setFillColor(theme->at("BtnIdle"));
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             slider.setFillColor(theme->at("BtnHover"));
-            if (mousePos.x - 5 > area.getPosition().x && mousePos.x < sliderMaxX + 5)
-                slider.setPosition(mousePos.x - 5, slider.getPosition().y);
+            sliderState = 1;
+            }
+    } else if (sliderState != 1)
+        slider.setFillColor(sf::Color::White);
+
+    if(sliderState == 1 && !sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+        if(this->slider.getGlobalBounds().contains(mousePos)){
+            slider.setFillColor(theme->at("BtnIdle"));
+            sliderState = 0;
+        } else {
+            slider.setFillColor(sf::Color::White);
+            sliderState = 0;
         }
+    }
+
+    if (sliderState == 1){
+        if (mousePos.x - 5 > area.getPosition().x && mousePos.x < sliderMaxX + 5)
+            slider.setPosition(mousePos.x - 5, slider.getPosition().y);
+        else if (mousePos.x - 5 < area.getPosition().x)
+            slider.setPosition(area.getPosition().x, slider.getPosition().y);
+        else if (mousePos.x > sliderMaxX + 5)
+            slider.setPosition(sliderMaxX, slider.getPosition().y);
     }
 
     value = std::round(min + (slider.getPosition().x - area.getPosition().x) / (sliderMaxX - area.getPosition().x) * (max - min));
