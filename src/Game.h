@@ -24,10 +24,10 @@ private:
     std::map<std::string, int> supportedKeys;
 
     //Init
-    void initVariables();
-    void initWindow();
-    void initStates();
-    void initKeys();
+    void initVariables();   //Initializes Variables
+    void initWindow();      //Initializes Window
+    void initStates();      //Initializes States
+    void initKeys();        //Initializes Keys
 
 public:
     Game();
@@ -36,13 +36,13 @@ public:
     //Functions
     void endApp();
         //update
-    void updateDt();
-    void updateSFMLEvents();
-    void update();
+    void updateDt();            //Updates delta time
+    void updateSFMLEvents();    //Updates events
+    void update();              //Updates states
         //Render
-    void render();
+    void render();              //Renders game
         //GameLoop
-    void run();
+    void run();                 //Game loop
 };
 
 

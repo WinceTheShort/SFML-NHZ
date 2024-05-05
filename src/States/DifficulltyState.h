@@ -16,10 +16,10 @@ private:
     std::map<std::string, Difficulty*> difficulties;
 
     //Functions
-    void initFonts();
-    void initKeybinds();
-    void initButtons();
-    void initDifficulty();
+    void initFonts();       //Initializes fonts
+    void initKeybinds();    //Initializes keybinds
+    void initButtons();     //Initializes buttons
+    void initDifficulty();  //Loads difficulties from config
 
 public:
 
@@ -28,12 +28,12 @@ public:
 
     //Functions
     void endState();
+    void loadGame();                                            //Loads saved game
 
-
-    void handleInput(const float& dt) override;
-    void handleButtons() override;
-    void update(const float& dt) override;
-    void render(sf::RenderTarget* target = nullptr) override;
+    void handleInput(const float& dt) override;                 //Handles inputs, takes delta time
+    void handleButtons() override;                              //Handles buttons
+    void update(const float& dt) override;                      //updates the state, takes delta time
+    void render(sf::RenderTarget* target = nullptr) override;   //Renders state elements, takes sf::RenderTarget*
 };
 
 

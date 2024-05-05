@@ -21,14 +21,14 @@ void CustomState::initKeybinds() {
 }
 
 void CustomState::initButtons() {
-    this->buttons["BACK"] = new Button(40,40,150,70,10,&font,"BACK", 25, &colorThemes.at(activeTheme), 10);
-    this->buttons["START"] = new Button(1730,40,150,70,10,&font,"START", 25, &colorThemes.at(activeTheme), 10);
+    this->buttons["BACK"] = new Button(40,40,150,70,10,10,&colorThemes.at(activeTheme),&font,"BACK",25);
+    this->buttons["START"] = new Button(1730,40,150,70,10,10,&colorThemes.at(activeTheme),&font,"START",25);
 
 }
 
 void CustomState::initSliders() {
-    this->sliders["COLUMNS"] = new Slider(860, 1000, 200, &font, "COLUMNS", 30, &colorThemes.at(activeTheme), 9, 185);
-    this->sliders["ROWS"] = new Slider(610, 1000, 200, &font, "ROWS", 30, &colorThemes.at(activeTheme), 9, 100);
+    this->sliders["COLUMNS"] = new Slider(860, 1000, 200, &font, "COLUMNS", 30, &colorThemes.at(activeTheme), 9, 155);
+    this->sliders["ROWS"] = new Slider(610, 1000, 200, &font, "ROWS", 30, &colorThemes.at(activeTheme), 9, 85);
     this->sliders["BOMBS"] = new Slider(1110, 1000, 200, &font, "BOMBS", 30, &colorThemes.at(activeTheme), 10, 100);
 
 
@@ -75,7 +75,9 @@ void CustomState::handleButtons() {
     }
 }
 
-void CustomState::handleSliders() {}
+void CustomState::handleSliders() {
+    sliders.at("BOMBS")->changeMax(sliders.at("COLUMNS")->getValue()*sliders.at("ROWS")->getValue()*0.5);
+}
 
 void CustomState::update(const float &dt) {
     this->updateMousePositions();

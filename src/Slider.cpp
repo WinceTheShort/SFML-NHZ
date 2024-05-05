@@ -45,6 +45,10 @@ int Slider::getValue() {
     return value;
 }
 
+void Slider::changeMax(int newMax) {
+    max = newMax;
+}
+
 void Slider::update(sf::Vector2f mousePos) {
 
     if (area.getGlobalBounds().contains(mousePos) && sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -94,3 +98,4 @@ void Slider::render(sf::RenderTarget *target) {
     target->draw(text);
     target->draw(valueDisplay);;
 }
+

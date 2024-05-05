@@ -41,10 +41,11 @@ public:
            int min, int max, float scale = 1);
     ~Slider();
 
-    int getValue();
+    int getValue(); //returns sliders current value
 
-    void update(sf::Vector2f mousePos);
-    void render(sf::RenderTarget* target);
+    void changeMax(int newMax); //changes max value
+    void update(sf::Vector2f mousePos); //updates slider
+    void render(sf::RenderTarget* target);  //renders slider
 };
 
 

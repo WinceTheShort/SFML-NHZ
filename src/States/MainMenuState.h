@@ -15,20 +15,20 @@ private:
     sf::Sprite backgroundImage;
 
     //Functions
-    void initFonts();
-    void initKeybinds();
-    void initButtons();
+    void initFonts();       //Initializes fonts
+    void initKeybinds();    //Initializes keybinds
+    void initButtons();     //Initializes buttons
 public:
     MainMenuState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
     virtual ~MainMenuState();
 
     //Functions
-    void endState();
+    void endState();        //Performs actions before quitting the state
 
-    void handleInput(const float& dt);
-    void handleButtons();
-    void update(const float& dt);
-    void render(sf::RenderTarget* target = nullptr);
+    void handleInput(const float& dt);                  //Handles inputs, takes delta time
+    void handleButtons();                               //Handles buttons
+    void update(const float& dt);                       //updates the state, takes delta time
+    void render(sf::RenderTarget* target = nullptr);    //Renders state elements, takes sf::RenderTarget*
 };
 
 

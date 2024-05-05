@@ -129,6 +129,22 @@ build CMakeFiles/CMakeSFMLProject.dir/src/States/EndGameState.cpp.obj: CXX_COMPI
   OBJECT_DIR = CMakeFiles\CMakeSFMLProject.dir
   OBJECT_FILE_DIR = CMakeFiles\CMakeSFMLProject.dir\src\States
 
+build CMakeFiles/CMakeSFMLProject.dir/src/Board.cpp.obj: CXX_COMPILER__CMakeSFMLProject_unscanned_Debug C$:/Users/wince/CLionProjects/SFML/SFML-NHZ/src/Board.cpp || cmake_object_order_depends_target_CMakeSFMLProject
+  DEFINES = -DSFML_STATIC
+  DEP_FILE = CMakeFiles\CMakeSFMLProject.dir\src\Board.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/wince/CLionProjects/SFML/SFML-NHZ/cmake-build-debug/_deps/sfml-src/include
+  OBJECT_DIR = CMakeFiles\CMakeSFMLProject.dir
+  OBJECT_FILE_DIR = CMakeFiles\CMakeSFMLProject.dir\src
+
+build CMakeFiles/CMakeSFMLProject.dir/src/Cell.cpp.obj: CXX_COMPILER__CMakeSFMLProject_unscanned_Debug C$:/Users/wince/CLionProjects/SFML/SFML-NHZ/src/Cell.cpp || cmake_object_order_depends_target_CMakeSFMLProject
+  DEFINES = -DSFML_STATIC
+  DEP_FILE = CMakeFiles\CMakeSFMLProject.dir\src\Cell.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/wince/CLionProjects/SFML/SFML-NHZ/cmake-build-debug/_deps/sfml-src/include
+  OBJECT_DIR = CMakeFiles\CMakeSFMLProject.dir
+  OBJECT_FILE_DIR = CMakeFiles\CMakeSFMLProject.dir\src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target CMakeSFMLProject
@@ -137,7 +153,7 @@ build CMakeFiles/CMakeSFMLProject.dir/src/States/EndGameState.cpp.obj: CXX_COMPI
 #############################################
 # Link the executable bin\CMakeSFMLProject.exe
 
-build bin/CMakeSFMLProject.exe: CXX_EXECUTABLE_LINKER__CMakeSFMLProject_Debug CMakeFiles/CMakeSFMLProject.dir/src/main.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/Game.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/State.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/MainMenuState.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/GameState.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/Button.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/DifficulltyState.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/Slider.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/CustomDiffState.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/EndGameState.cpp.obj | _deps/sfml-build/lib/libsfml-graphics-s-d.a _deps/sfml-build/lib/libsfml-window-s-d.a _deps/sfml-build/lib/libsfml-system-s-d.a _deps/sfml-src/extlibs/libs-mingw/x64/libfreetype.a || _deps/sfml-build/lib/libsfml-graphics-s-d.a _deps/sfml-build/lib/libsfml-system-s-d.a _deps/sfml-build/lib/libsfml-window-s-d.a
+build bin/CMakeSFMLProject.exe: CXX_EXECUTABLE_LINKER__CMakeSFMLProject_Debug CMakeFiles/CMakeSFMLProject.dir/src/main.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/Game.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/State.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/MainMenuState.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/GameState.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/Button.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/DifficulltyState.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/Slider.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/CustomDiffState.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/States/EndGameState.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/Board.cpp.obj CMakeFiles/CMakeSFMLProject.dir/src/Cell.cpp.obj | _deps/sfml-build/lib/libsfml-graphics-s-d.a _deps/sfml-build/lib/libsfml-window-s-d.a _deps/sfml-build/lib/libsfml-system-s-d.a _deps/sfml-src/extlibs/libs-mingw/x64/libfreetype.a || _deps/sfml-build/lib/libsfml-graphics-s-d.a _deps/sfml-build/lib/libsfml-system-s-d.a _deps/sfml-build/lib/libsfml-window-s-d.a
   FLAGS = -g
   LINK_LIBRARIES = _deps/sfml-build/lib/libsfml-graphics-s-d.a  _deps/sfml-build/lib/libsfml-window-s-d.a  _deps/sfml-build/lib/libsfml-system-s-d.a  -lopengl32  -lwinmm  -lgdi32  _deps/sfml-src/extlibs/libs-mingw/x64/libfreetype.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\CMakeSFMLProject.dir

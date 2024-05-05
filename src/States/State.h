@@ -1,5 +1,5 @@
 //
-// Created by wince on 2024. 04. 21..
+// Created by wince on 2024. 04. 21.
 //
 
 #ifndef SFML_NHZ_STATE_H
@@ -43,10 +43,10 @@ protected:
     //Resources
     std::vector<sf::Texture*> textures;
 
-    void initColorThemes();
+    void initColorThemes();                                         //Loads themes from config
 
     //Functions
-    virtual void initKeybinds() = 0;
+    virtual void initKeybinds() = 0;                                //Initializes keybinds
 
 
 public:
@@ -54,15 +54,15 @@ public:
     State(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
     virtual ~State();
 
-    bool getQuit() const;
+    bool getQuit() const;                                           //Returns quit bool
 
-    virtual void checkForQuit();
+    virtual void checkForQuit();                                    //Checks quit bool
 
-    virtual void endState() = 0;
-    virtual void updateMousePositions();
-    virtual void handleInput(const float& dt) = 0;
-    virtual void update(const float& dt) = 0;
-    virtual void render(sf::RenderTarget* target = nullptr) = 0;
+    virtual void endState() = 0;                                    //Performs actions before quitting the state
+    virtual void updateMousePositions();                            //Updates mouse positions
+    virtual void handleInput(const float& dt) = 0;                  //Handles inputs, takes delta time
+    virtual void update(const float& dt) = 0;                       //updates the state, takes delta time
+    virtual void render(sf::RenderTarget* target = nullptr) = 0;    //Renders state elements, takes sf::RenderTarget*
 
     //Debug: displays mouse cords
     virtual void renderDebug(sf::RenderTarget* target){

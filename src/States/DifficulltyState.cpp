@@ -21,12 +21,12 @@ void DifficulltyState::initKeybinds() {
 }
 
 void DifficulltyState::initButtons() {
-    this->buttons["EASY"] = new Button(760, 70, 400, 100, 20, &font, "EASY", 50, &colorThemes.at(activeTheme), 10);
-    this->buttons["MEDIUM"] = new Button(760, 240, 400, 100, 20, &font, "MEDIUM", 50, &colorThemes.at(activeTheme), 10);
-    this->buttons["HARD"] = new Button(760, 410, 400, 100, 20, &font, "HARD", 50, &colorThemes.at(activeTheme), 10);
-    this->buttons["CUSTOM"] = new Button(760, 580, 400, 100, 20, &font, "CUSTOM", 50, &colorThemes.at(activeTheme), 10);
-    this->buttons["LOAD"] = new Button(760, 750, 400, 100, 20, &font, "LOAD", 50, &colorThemes.at(activeTheme), 10);
-    this->buttons["BACK"] = new Button(760, 920, 400, 100, 20, &font, "BACK", 50, &colorThemes.at(activeTheme), 10);
+    this->buttons["EASY"] = new Button(760,70,400,100,20,10,&colorThemes.at(activeTheme),&font,"EASY",50);
+    this->buttons["MEDIUM"] = new Button(760,240,400,100,20,10,&colorThemes.at(activeTheme),&font,"MEDIUM",50);
+    this->buttons["HARD"] = new Button(760,410,400,100,20,10,&colorThemes.at(activeTheme),&font,"HARD",50);
+    this->buttons["CUSTOM"] = new Button(760,580,400,100,20,10,&colorThemes.at(activeTheme),&font,"CUSTOM",50);
+    this->buttons["LOAD"] = new Button(760,750,400,100,20,10,&colorThemes.at(activeTheme),&font,"LOAD",50);
+    this->buttons["BACK"] = new Button(760,920,400,100,20,10,&colorThemes.at(activeTheme),&font,"BACK",50);
 
 
 }
@@ -89,6 +89,9 @@ void DifficulltyState::handleButtons() { //Updates and handles buttons
     }
     if (this->buttons["HARD"]->isPressed()){
         this->states->push(new GameState(this->window, this->supportedKeys, this->states, difficulties.at("HARD")));
+    }
+    if (this->buttons["LOAD"]->isPressed()){
+
     }
     if (this->buttons["CUSTOM"]->isPressed()){
         this->states->push(new CustomState(this->window, this->supportedKeys, this->states));

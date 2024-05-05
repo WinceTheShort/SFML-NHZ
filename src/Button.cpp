@@ -4,9 +4,10 @@
 
 #include "Button.h"
 
-Button::Button(float x, float y, float width, float height,float outlineThickness,
-               sf::Font* font, std::string text, int fontSize,
-               std::map<std::string, sf::Color>* theme, float shadowSize, float textShadowSize){
+Button::Button(float x, float y, float width, float height,float outlineThickness, float shadowSize,
+               std::map<std::string, sf::Color>* theme,
+               sf::Font* font, std::string text, int fontSize, float textShadowSize,
+               sf::Texture* texture): font(font), theme(theme), btnTexture(texture){
     this->buttonState = 0;
     this->buttonStateS = "BtnIdle";
 
@@ -14,22 +15,6 @@ Button::Button(float x, float y, float width, float height,float outlineThicknes
     this->shape.setPosition(sf::Vector2f(x,y));
     this->shape.setOutlineColor(sf::Color::Black);
     this->shape.setOutlineThickness(outlineThickness);
-
-    this->font = font;
-    this->text.setFont(*this->font);
-    this->text.setString(text);
-    this->text.setFillColor(sf::Color::Black);
-    this->text.setCharacterSize(fontSize);
-
-
-    this->text.setPosition(sf::Vector2f(this->shape.getPosition().x + this->shape.getSize().x/2 - this->text.getGlobalBounds().width/2,
-                                        this->shape.getPosition().y + this->shape.getSize().y/2 - this->text.getGlobalBounds().height/2));
-
-    textShadow.setFont(*this->font);
-    textShadow.setCharacterSize(fontSize);
-    textShadow.setString(text);
-    textShadow.setFillColor(theme->at("Shadow"));
-    textShadow.setPosition(sf::Vector2f(this->text.getPosition().x + textShadowSize, this->text.getPosition().y + textShadowSize));
 
     this->shadowSize = shadowSize;
     if(this->shadowSize != 0){
@@ -41,8 +26,24 @@ Button::Button(float x, float y, float width, float height,float outlineThicknes
     }
 
 
+    if (btnTexture == nullptr){
 
-    this->theme = theme;
+        this->text.setFont(*this->font);
+        this->text.setString(text);
+        this->text.setFillColor(sf::Color::Black);
+        this->text.setCharacterSize(fontSize);
+        this->text.setPosition(sf::Vector2f(this->shape.getPosition().x + this->shape.getSize().x/2 - this->text.getGlobalBounds().width/2,
+                                            this->shape.getPosition().y + this->shape.getSize().y/2 - this->text.getGlobalBounds().height/2));
+        textShadow.setFont(*this->font);
+        textShadow.setCharacterSize(fontSize);
+        textShadow.setString(text);
+        textShadow.setFillColor(theme->at("Shadow"));
+        textShadow.setPosition(sf::Vector2f(this->text.getPosition().x + textShadowSize, this->text.getPosition().y + textShadowSize));
+    } else {
+
+    }
+
+
 }
 
 Button::~Button() {

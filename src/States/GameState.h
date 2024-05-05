@@ -11,39 +11,54 @@
 class GameState : public iButton{
 private:
     //Variables
+    sf::RectangleShape backgroundColor;
+    sf::RectangleShape backgroundBorder;
+    sf::Texture buttonSprites;
+    sf::Texture cellSprites;
+
+
     sf::View view;
     float viewSpeed;
     bool isShiftPressed;
+
     sf::Vector2i mousePosGrid;
     float gridSize;
-    sf::RectangleShape backgroundColor;
-    int correctFlag, wrongFlag;
+
     Difficulty *currentDifficulty;
-    sf::RectangleShape boardBackground;
-    sf::RectangleShape backgroundBorder;
+    Board* board;
+    int correctFlag, wrongFlag;
+    bool win;
+
+    int bombCounter, clock;
+    sf::Text bombCounterText, clockText;
+    sf::RectangleShape bombCounterBackground, clockBackground;
+
     sf::RectangleShape test3;
 
 
 
     //Functions
-    void initFonts();
-    void initKeybinds();
-    void initButtons();
-    void initBoard();
+    void initFonts();       //Initializes fonts
+    void initKeybinds();    //Initializes keybinds
+    void initButtons();     //Initializes buttons
 public:
-    GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states, Difficulty *difficulty);
+    GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states, Difficulty *difficulty, bool load = false);
     virtual ~GameState();
 
     //Functions
     void endState();
-    bool checkWinCondition();
+    bool checkWinCondition();                           //Checks if all bombs are correctly flagged, true=yes false=no
+    void saveGame();                                    //Saves current game to a save file
+    void setQuit();                                     //Sets quit bool
 
 
-    void handleInput(const float& dt);
-    void handleButtons();
-    void updateMousePositions();
-    void update(const float& dt);
-    void render(sf::RenderTarget* target = nullptr);
+    void handleInput(const float& dt);                  //Handles inputs, takes delta time
+    void handleButtons();                               //Handles buttons
+    void updateMousePositions();                        //Updates mouse positions
+    void updateClock(const float& dt);                  //Updates clock, takes delta time
+    void updateBombCounter();                           //Updates bomb counter
+    void update(const float& dt);                       //updates the state, takes delta time
+    void render(sf::RenderTarget* target = nullptr);    //Renders state elements, takes sf::RenderTarget*
 
     void renderDebug(sf::RenderTarget* target){
         std::stringstream ss;
@@ -71,7 +86,7 @@ public:
 
         target->draw(backdrop);
         target->draw(mousePosText);
-    }
+    }     //Renders debug panel
 };
 
 

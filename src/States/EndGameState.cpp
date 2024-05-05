@@ -24,8 +24,8 @@ void EndGameState::initButtons() {
 
 }
 
-EndGameState::EndGameState(sf::RenderWindow *window, std::map<std::string, int> *supportedKeys,std::stack<State *> *states)
-: State(window, supportedKeys, states){
+EndGameState::EndGameState(sf::RenderWindow *window, std::map<std::string, int> *supportedKeys,std::stack<State *> *states, bool win)
+: State(window, supportedKeys, states), win(win){
     this->initFonts();
     this->initKeybinds();
     this->initButtons();

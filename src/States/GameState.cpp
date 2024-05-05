@@ -1,5 +1,5 @@
 //
-// Created by wince on 2024. 04. 22..
+// Created by wince on 2024. 04. 22.
 //
 
 #include "GameState.h"
@@ -21,35 +21,28 @@ void GameState::initKeybinds() {
 }
 
 void GameState::initButtons() {
-    this->buttons["EXIT_STATE"] = new Button(100, 100, 150, 50, 10, &this->font, "BACK",12, &this->colorThemes.at(activeTheme));
-    this->buttons["GAME_STATE"] = new Button(100, 200, 150, 50, 10, &this->font, "NEXT",10,  &this->colorThemes.at(activeTheme));
+    this->buttons["EXIT_STATE"] = new Button(100,100,150,50,10,10,&this->colorThemes.at(activeTheme),&this->font,"BACK",12);
+    this->buttons["GAME_STATE"] = new Button(100,200,150,50,10,10,&this->colorThemes.at(activeTheme),&this->font,"NEXT",10);
 }
 
-void GameState::initBoard() {
-    boardBackground.setSize(sf::Vector2f(gridSize*currentDifficulty->columns, gridSize*currentDifficulty->rows));
-    boardBackground.setOutlineThickness(5);
-    boardBackground.setOutlineColor(sf::Color::Black);
-    view.setCenter(boardBackground.getSize().x/2, boardBackground.getSize().y/2);
-    view.setSize(sf::Vector2f(boardBackground.getSize().x <= boardBackground.getSize().y ?
-    (boardBackground.getSize().y + 55) * (16.f/9.f) : boardBackground.getSize().x + 55,
-    boardBackground.getSize().x <= boardBackground.getSize().y ?
-    boardBackground.getSize().y + 55 : (boardBackground.getSize().x + 55) / (16.f/9.f)));
-}
-
-GameState::GameState(sf::RenderWindow *window, std::map<std::string, int> *supportedKeys, std::stack<State*>* states, Difficulty *difficulty)
+GameState::GameState(sf::RenderWindow *window, std::map<std::string, int> *supportedKeys, std::stack<State*>* states, Difficulty *difficulty, bool load)
 : State(window, supportedKeys, states), currentDifficulty (difficulty) {
-    gridSize = 10;
+    gridSize = 12;
     this->initFonts();
     this->initKeybinds();
     this->initButtons();
 
     correctFlag = 0;
     wrongFlag = 0;
+    win = false;
 
     view.setSize(window->getSize().x, window->getSize().y);
     view.setCenter(window->getSize().x / 2, window->getSize().y / 2);
     viewSpeed = 200;
     isShiftPressed = false;
+
+    buttonSprites.loadFromFile("../../src/Resources/ButtonSprites.png");
+    cellSprites.loadFromFile("../../src/Resources/CellSpriteSheet.png");
 
     this->backgroundColor.setFillColor(colorThemes.at(activeTheme).at("BtnActive"));
     this->backgroundColor.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
@@ -59,11 +52,12 @@ GameState::GameState(sf::RenderWindow *window, std::map<std::string, int> *suppo
     this->backgroundBorder.setOutlineThickness(20);
     this->backgroundBorder.setFillColor(sf::Color(0, 0, 0, 0));
 
-    this->initBoard();
+    board = new Board(currentDifficulty, gridSize, &view, &cellSprites);
 }
 
 GameState::~GameState() {
     deleteButtons();
+    delete board;
 }
 
 void GameState::endState() {
@@ -71,7 +65,10 @@ void GameState::endState() {
 }
 
 bool GameState::checkWinCondition() {
-    if (wrongFlag == 0 && correctFlag == currentDifficulty->bombs)
+    if (wrongFlag == 0 && correctFlag == currentDifficulty->bombs){
+        win = true;
+        return true;
+    } else if (board->gameOver())
         return true;
     return false;
 }
@@ -79,8 +76,8 @@ bool GameState::checkWinCondition() {
 void GameState::handleInput(const float &dt) {
     this->checkForQuit();
     if (checkWinCondition())
-        this->states->push(new EndGameState(this->window, this->supportedKeys, this->states));
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && !isShiftPressed){ //Shit for fast panning
+        this->states->push(new EndGameState(this->window, this->supportedKeys, this->states, win));
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && !isShiftPressed){ //Shift for fast panning
         viewSpeed *= 2;
         isShiftPressed = true;
     } else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && isShiftPressed){
@@ -95,16 +92,16 @@ void GameState::handleInput(const float &dt) {
         view.move(0.f,-viewSpeed * dt);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) //Down
         view.move(0.f,viewSpeed * dt);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && view.getSize().x > 200){
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && view.getSize().x > 200){ //Zoom in
         view.setSize(view.getSize().x/1.01,view.getSize().y/1.01);
         viewSpeed /= 1.005;
 
-    } //Zoom in
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && view.getSize().x < window->getSize().x){
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && view.getSize().x < window->getSize().x){ //Zoom out
         view.setSize(view.getSize().x*1.01,view.getSize().y*1.01);
         viewSpeed *= 1.005;
-    } //Zoom out
+    }
 }
 
 void GameState::handleButtons() { //Updates and handles buttons
@@ -137,11 +134,7 @@ void GameState::render(sf::RenderTarget *target) {
     window->setView(view);
     //Game Elements
     this->renderButtons(target);
-    target->draw(boardBackground);
-
-    test3.setSize(sf::Vector2f(5,5));
-    test3.setPosition(window->getSize().x/2-2.5, window->getSize().y/2-2.5);
-    test3.setFillColor(sf::Color::Black);
+    board->drawBoard(target);
 
     //Reset view
     window->setView(window->getDefaultView());
