@@ -20,39 +20,76 @@ void GameState::initKeybinds() {
     file.close();
 }
 
-void GameState::initButtons() {
-    this->buttons["EXIT_STATE"] = new Button(100,100,150,50,10,10,&this->colorThemes.at(activeTheme),&this->font,"BACK",12);
-    this->buttons["GAME_STATE"] = new Button(100,200,150,50,10,10,&this->colorThemes.at(activeTheme),&this->font,"NEXT",10);
+void GameState::initButtons() { //Creates the buttons
+    this->buttons["QUIT"] = new Button(30,30,60,60,0,5,&colorThemes.at(activeTheme),nullptr,"",0,0, &buttonSprites,1);
+    this->buttons["RETRY"] = new Button(110,30,60,60,0,5,&colorThemes.at(activeTheme),nullptr,"",0,0, &buttonSprites,0);
+    this->buttons["SAVE"] = new Button(190,30,60,60,0,5,&colorThemes.at(activeTheme),nullptr,"",0,0, &buttonSprites,2);
 }
 
 GameState::GameState(sf::RenderWindow *window, std::map<std::string, int> *supportedKeys, std::stack<State*>* states, Difficulty *difficulty, bool load)
-: State(window, supportedKeys, states), currentDifficulty (difficulty) {
-    gridSize = 12;
-    this->initFonts();
-    this->initKeybinds();
-    this->initButtons();
+: State(window, supportedKeys, states), isShiftPressed(false), gridSize(12), currentDifficulty (difficulty),
+correctFlag(0), wrongFlag(0), gameEnded(false), win(false), bombCounter(currentDifficulty->bombs), clock(0){
+    //Init functions
+    initFonts();
+    initKeybinds();
+    initButtons();
 
-    correctFlag = 0;
-    wrongFlag = 0;
-    win = false;
-
+    //Sets views default parameters and view speed
     view.setSize(window->getSize().x, window->getSize().y);
     view.setCenter(window->getSize().x / 2, window->getSize().y / 2);
     viewSpeed = 200;
-    isShiftPressed = false;
 
+    //Loads sprites from files
     buttonSprites.loadFromFile("../../src/Resources/ButtonSprites.png");
     cellSprites.loadFromFile("../../src/Resources/CellSpriteSheet.png");
 
-    this->backgroundColor.setFillColor(colorThemes.at(activeTheme).at("BtnActive"));
-    this->backgroundColor.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
-    this->backgroundBorder.setSize(sf::Vector2f(backgroundColor.getSize().x - 40, backgroundColor.getSize().y - 40));
-    this->backgroundBorder.setPosition(20, 20);
-    this->backgroundBorder.setOutlineColor(sf::Color::Black);
-    this->backgroundBorder.setOutlineThickness(20);
-    this->backgroundBorder.setFillColor(sf::Color(0, 0, 0, 0));
+    //Sets the background color's parameters
+    backgroundColor.setFillColor(colorThemes.at(activeTheme).at("BtnActive"));
+    backgroundColor.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
 
-    board = new Board(currentDifficulty, gridSize, &view, &cellSprites);
+    //Sets the background border's parameters
+    backgroundBorder.setSize(sf::Vector2f(backgroundColor.getSize().x - 40, backgroundColor.getSize().y - 40));
+    backgroundBorder.setPosition(20, 20);
+    backgroundBorder.setOutlineColor(sf::Color::Black);
+    backgroundBorder.setOutlineThickness(20);
+    backgroundBorder.setFillColor(sf::Color(0, 0, 0, 0));
+
+    //Sets the UI background's parameters
+    uiBackground.setFillColor(colorThemes.at(activeTheme).at("BtnIdle"));
+    uiBackground.setSize(sf::Vector2f(window->getSize().x - 40, 80));
+    uiBackground.setPosition(20,20);
+    uiBackground.setOutlineThickness(20);
+    uiBackground.setOutlineColor(sf::Color::Black);
+
+    //Sets bomb counter's parameters
+    bombCounterText.setFont(font);
+    bombCounterText.setFillColor(sf::Color::Black);
+    bombCounterText.setCharacterSize(60);
+    bombCounterText.setPosition(300, 30);
+    bombCounterText.setLetterSpacing(0.2);
+
+    //Sets bomb icon's parameters
+    bombCounterIcon.setSize(sf::Vector2f(60, 60));
+    bombCounterIcon.setTexture(&cellSprites);
+    bombCounterIcon.setTextureRect(sf::IntRect(10*12,0,12,12));
+    bombCounterIcon.setFillColor(colorThemes.at(activeTheme).at("BtnIdle"));
+
+    //Sets you win text's parameters
+    youWinText.setFont(font);
+    youWinText.setFillColor(sf::Color::Black);
+    youWinText.setCharacterSize(60);
+    youWinText.setString("You Win");
+    youWinText.setPosition(window->getSize().x/2 - youWinText.getGlobalBounds().width/2, 30);
+
+    //Sets game over text's parameters
+    gameOverText.setFont(font);
+    gameOverText.setFillColor(sf::Color::Black);
+    gameOverText.setCharacterSize(60);
+    gameOverText.setString("Game Over");
+    gameOverText.setPosition(window->getSize().x/2 - youWinText.getGlobalBounds().width/2, 30);
+
+    //Creates a new board
+    board = new Board(currentDifficulty, gridSize, &view, &cellSprites, &colorThemes.at(activeTheme));
 }
 
 GameState::~GameState() {
@@ -64,83 +101,140 @@ void GameState::endState() {
 
 }
 
-bool GameState::checkWinCondition() {
-    if (wrongFlag == 0 && correctFlag == currentDifficulty->bombs){
+void GameState::checkEndGameCondition() {
+    if (board->checkWinCondition()){
         win = true;
-        return true;
+        gameEnded = true;
     } else if (board->gameOver())
-        return true;
-    return false;
+        gameEnded = true;
+}
+
+void GameState::saveGame() {
+
 }
 
 void GameState::handleInput(const float &dt) {
-    this->checkForQuit();
-    if (checkWinCondition())
-        this->states->push(new EndGameState(this->window, this->supportedKeys, this->states, win));
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && !isShiftPressed){ //Shift for fast panning
+    //Checks quit
+    checkForQuit();
+
+    //Checks end game condition
+    checkEndGameCondition();
+
+    //Shift for faster view movement
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && !isShiftPressed){
         viewSpeed *= 2;
         isShiftPressed = true;
     } else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && isShiftPressed){
         viewSpeed /= 2;
         isShiftPressed = false;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) //Left
+
+    //View left
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         view.move(-viewSpeed * dt,0.f);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) //Right
+    //View right
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         view.move(viewSpeed * dt,0.f);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) //Up
+    //View up
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         view.move(0.f,-viewSpeed * dt);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) //Down
+    //View down
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         view.move(0.f,viewSpeed * dt);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && view.getSize().x > 200){ //Zoom in
+    //Zoom in
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && view.getSize().x > 200){
         view.setSize(view.getSize().x/1.01,view.getSize().y/1.01);
         viewSpeed /= 1.005;
-
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && view.getSize().x < window->getSize().x){ //Zoom out
+    //Zoom out
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && view.getSize().x < window->getSize().x){
         view.setSize(view.getSize().x*1.01,view.getSize().y*1.01);
         viewSpeed *= 1.005;
     }
 }
 
 void GameState::handleButtons() { //Updates and handles buttons
-    if (this->buttons["EXIT_STATE"]->isPressed())
+    //Quit
+    if (this->buttons["QUIT"]->isPressed())
         this->quit = true;
-    if (this->buttons["GAME_STATE"]->isPressed()){
+
+    //Retry
+    if (this->buttons["RETRY"]->isPressed()){
+        gameEnded = false;
+        win = false;
+        delete board;
+        board = new Board(currentDifficulty, gridSize, &view, &cellSprites, &colorThemes.at(activeTheme));
+    }
+
+    //Save
+    if (this->buttons["SAVE"]->isPressed()){
 
     }
 }
 
 void GameState::updateMousePositions() {
+    //Screen
     this->mousePosScreen = sf::Mouse::getPosition();
+
+    //Window
     this->mousePosWindow = sf::Mouse::getPosition(*this->window);
+
+    //View
     this->mousePosView = this->window->mapPixelToCoords(mousePosWindow, view);
+
+    //Grid
     mousePosGrid = sf::Vector2i(mousePosView.x/gridSize,mousePosView.y/gridSize);
+}
+
+void GameState::updateBombCounter() {
+    std::stringstream ss;
+    ss << board->getRemainigFlagNum();
+    bombCounterText.setString(ss.str());
+    bombCounterIcon.setPosition(bombCounterText.getPosition().x + bombCounterText.getGlobalBounds().width + 15, 30);
+}
+
+void GameState::updateClock(const float &dt) {
+
 }
 
 void GameState::update(const float &dt) {
     this->updateMousePositions();
     this->updateButtons();
     this->handleInput(dt);
+    updateBombCounter();
+
+    //Disables board interaction if mouse is not in board, is over ui elements or the game is over
+    if (mousePosWindow.y > 120 && board->boardBackground.getGlobalBounds().contains(mousePosView) && !gameEnded)
+        board->updateBoard(mousePosGrid);
 }
 
 void GameState::render(sf::RenderTarget *target) {
     if (!target)
         target= this->window;
-    target->draw(backgroundColor);
+
+    target->draw(backgroundColor); //background color
 
     //Set view
     window->setView(view);
+
     //Game Elements
-    this->renderButtons(target);
-    board->drawBoard(target);
+    board->drawBoard(target); //draws board
 
     //Reset view
     window->setView(window->getDefaultView());
+
     //Gui
-    target->draw(test3);
-    target->draw(backgroundBorder);
+    target->draw(backgroundBorder); //border
+    target->draw(uiBackground); //ui background
+    this->renderButtons(target); //buttons
+    if (gameEnded){
+        if (win){target->draw(youWinText);}
+        else{target->draw(gameOverText);}
+    }
+    target->draw(bombCounterText);
+    target->draw(bombCounterIcon);
+
     //Debug
     renderDebug(target);
 }

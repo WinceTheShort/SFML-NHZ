@@ -39,7 +39,7 @@ public:
     Button(float x, float y, float width, float height,float outlineThickness, float shadowSize = 0,
            std::map<std::string, sf::Color>* theme = nullptr,
             sf::Font* font = nullptr, std::string text = "", int fontSize = 0, float textShadowSize = 0,
-           sf::Texture* texture = nullptr);
+           sf::Texture* texture = nullptr, int btnId =0, float scale = 0);
     ~Button();
 
     //Accessors

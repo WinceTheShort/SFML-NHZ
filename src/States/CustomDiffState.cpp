@@ -28,7 +28,7 @@ void CustomState::initButtons() {
 
 void CustomState::initSliders() {
     this->sliders["COLUMNS"] = new Slider(860, 1000, 200, &font, "COLUMNS", 30, &colorThemes.at(activeTheme), 9, 155);
-    this->sliders["ROWS"] = new Slider(610, 1000, 200, &font, "ROWS", 30, &colorThemes.at(activeTheme), 9, 85);
+    this->sliders["ROWS"] = new Slider(610, 1000, 200, &font, "ROWS", 30, &colorThemes.at(activeTheme), 9, 75);
     this->sliders["BOMBS"] = new Slider(1110, 1000, 200, &font, "BOMBS", 30, &colorThemes.at(activeTheme), 10, 100);
 
 

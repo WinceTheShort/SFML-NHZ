@@ -7,7 +7,7 @@
 Button::Button(float x, float y, float width, float height,float outlineThickness, float shadowSize,
                std::map<std::string, sf::Color>* theme,
                sf::Font* font, std::string text, int fontSize, float textShadowSize,
-               sf::Texture* texture): font(font), theme(theme), btnTexture(texture){
+               sf::Texture* texture, int btnId, float scale): font(font), theme(theme), btnTexture(texture){
     this->buttonState = 0;
     this->buttonStateS = "BtnIdle";
 
@@ -40,7 +40,8 @@ Button::Button(float x, float y, float width, float height,float outlineThicknes
         textShadow.setFillColor(theme->at("Shadow"));
         textShadow.setPosition(sf::Vector2f(this->text.getPosition().x + textShadowSize, this->text.getPosition().y + textShadowSize));
     } else {
-
+        shape.setTexture(btnTexture);
+        shape.setTextureRect(sf::IntRect(btnId*12,0,12,12));
     }
 
 
@@ -88,7 +89,9 @@ void Button::render(sf::RenderTarget *target) {
     }
 
     target->draw(this->shape);
-    target->draw(this->textShadow);
-    target->draw(this->text);
+    if (btnTexture == nullptr){
+        target->draw(this->textShadow);
+        target->draw(this->text);
+    }
 }
 

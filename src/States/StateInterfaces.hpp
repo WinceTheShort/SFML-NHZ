@@ -16,7 +16,7 @@ public:
     virtual void handleButtons() = 0; //handles buttons
     void updateButtons(){   //updates buttons
         for(auto &it : this->buttons)
-            it.second->update(this->mousePosView);
+            it.second->update(sf::Vector2f(this->mousePosWindow.x, this->mousePosWindow.y));
         handleButtons();
     }
     void renderButtons(sf::RenderTarget *target) {  //renders buttons

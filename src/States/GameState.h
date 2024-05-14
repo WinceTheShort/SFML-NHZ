@@ -11,10 +11,8 @@
 class GameState : public iButton{
 private:
     //Variables
-    sf::RectangleShape backgroundColor;
-    sf::RectangleShape backgroundBorder;
-    sf::Texture buttonSprites;
-    sf::Texture cellSprites;
+    sf::RectangleShape backgroundColor, backgroundBorder, uiBackground;
+    sf::Texture buttonSprites, cellSprites;
 
 
     sf::View view;
@@ -27,14 +25,11 @@ private:
     Difficulty *currentDifficulty;
     Board* board;
     int correctFlag, wrongFlag;
-    bool win;
+    bool gameEnded, win;
 
     int bombCounter, clock;
-    sf::Text bombCounterText, clockText;
-    sf::RectangleShape bombCounterBackground, clockBackground;
-
-    sf::RectangleShape test3;
-
+    sf::Text bombCounterText, clockText, youWinText, gameOverText;
+    sf::RectangleShape bombCounterIcon;
 
 
     //Functions
@@ -47,9 +42,8 @@ public:
 
     //Functions
     void endState();
-    bool checkWinCondition();                           //Checks if all bombs are correctly flagged, true=yes false=no
+    void checkEndGameCondition();                           //Checks if all bombs are correctly flagged, true=yes false=no
     void saveGame();                                    //Saves current game to a save file
-    void setQuit();                                     //Sets quit bool
 
 
     void handleInput(const float& dt);                  //Handles inputs, takes delta time
@@ -75,7 +69,7 @@ public:
            "View speed:" << viewSpeed << "\n" <<
            "Columns: " << currentDifficulty->columns << "\n" <<
            "Rows: " << currentDifficulty->rows << "\n" <<
-           "Bombs: " << currentDifficulty->bombs;
+           "Bombs: " << currentDifficulty->bombs << "\n";
         mousePosText.setFont(font);
         mousePosText.setString(ss.str());
         mousePosText.setPosition(sf::Vector2f(20,20));
