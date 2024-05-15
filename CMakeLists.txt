@@ -38,9 +38,6 @@ add_executable(CMakeSFMLProject src/main.cpp
         src/States/StateInterfaces.hpp
         src/States/StateInterfaces.hpp
         src/States/StateInterfaces.hpp
-        src/States/EndGameState.cpp
-        src/States/EndGameState.h
-        src/States/EndGameState.h
         src/Board.cpp
         src/Board.h
         src/Board.h

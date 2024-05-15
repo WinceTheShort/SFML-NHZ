@@ -40,6 +40,7 @@ void DifficulltyState::initDifficulty() {
         while (file >> Diff >> c >> r >> b) {
             this->difficulties[Diff] = new Difficulty(c,r,b);
         }
+        difficulties["LOAD"] = new Difficulty(1,1,1);
     }
 }
 
@@ -91,7 +92,7 @@ void DifficulltyState::handleButtons() { //Updates and handles buttons
         this->states->push(new GameState(this->window, this->supportedKeys, this->states, difficulties.at("HARD")));
     }
     if (this->buttons["LOAD"]->isPressed()){
-
+        this->states->push(new GameState(this->window, this->supportedKeys, this->states, difficulties.at("LOAD"),true));
     }
     if (this->buttons["CUSTOM"]->isPressed()){
         this->states->push(new CustomState(this->window, this->supportedKeys, this->states));

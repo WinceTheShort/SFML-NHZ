@@ -5,19 +5,25 @@
 #include "State.h"
 
 void State::initColorThemes(){
-    this->activeTheme = "Grayscale";
-    std::ifstream file("../../src/Config/Themes/GrayScale.txt.");
+    using namespace std::filesystem;
 
-    this->colorThemes["Grayscale"];
-    if (file.is_open()){        //Grayscale
-        std::string Color;
-        int r, g, b, a;
-        while (file >> Color >> r >> g >> b >> a) {
-            sf::Color color(r, g, b, a);
-            this->colorThemes["Grayscale"][Color] = color;
+    path directoryPath = "../../src/Config/Themes";
+
+    this->activeTheme = "GRAYSCALE";
+
+    if (exists(directoryPath)
+        && is_directory(directoryPath)) {
+        for (const auto& entry: directory_iterator(directoryPath)) {
+            std::ifstream ifstream(entry.path());
+            std::string Name, Color;
+            int r, g, b, a;
+            ifstream >> Name;
+            while (ifstream >> Color >> r >> g >> b >> a) {
+                sf::Color color(r,g,b,a);
+                this->colorThemes[Name][Color] = color;
+            }
         }
     }
-
 }
 
 State::State(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states) {

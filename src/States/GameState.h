@@ -5,7 +5,7 @@
 #ifndef SFML_NHZ_GAMESTATE_H
 #define SFML_NHZ_GAMESTATE_H
 
-#include "EndGameState.h"
+#include "../Board.h"
 
 
 class GameState : public iButton{
@@ -27,7 +27,8 @@ private:
     int correctFlag, wrongFlag;
     bool gameEnded, win;
 
-    int bombCounter, clock;
+    int clock;
+    sf::Clock timerClock;
     sf::Text bombCounterText, clockText, youWinText, gameOverText;
     sf::RectangleShape bombCounterIcon;
 
@@ -43,13 +44,12 @@ public:
     //Functions
     void endState();
     void checkEndGameCondition();                           //Checks if all bombs are correctly flagged, true=yes false=no
-    void saveGame();                                    //Saves current game to a save file
 
 
     void handleInput(const float& dt);                  //Handles inputs, takes delta time
     void handleButtons();                               //Handles buttons
     void updateMousePositions();                        //Updates mouse positions
-    void updateClock(const float& dt);                  //Updates clock, takes delta time
+    void updateClock();                  //Updates clock, takes delta time
     void updateBombCounter();                           //Updates bomb counter
     void update(const float& dt);                       //updates the state, takes delta time
     void render(sf::RenderTarget* target = nullptr);    //Renders state elements, takes sf::RenderTarget*

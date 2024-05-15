@@ -33,7 +33,7 @@ public:
     void changeSprite(int spriteI); //Changes tiles sprite, takes the index of sprite
     void update(const sf::Vector2i mousePos, Board* board);
     void drawCell(sf::RenderTarget* target);
-    virtual void loadCell(bool revealed, bool flagged);
+    virtual void loadCell(bool revealed, bool flagged, int value);
     virtual void reveal(Board* board) = 0;  //reveals the cell
     virtual void flag(Board* board) = 0;    //handles flag numbers
 };

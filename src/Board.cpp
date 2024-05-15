@@ -18,20 +18,6 @@ void Board::initBoard() {
                               boardBackground.getSize().x <= boardBackground.getSize().y ?
                               boardBackground.getSize().y + 55 : (boardBackground.getSize().x + 55) / (16.f/9.f)));
     view->setCenter(boardBackground.getSize().x/2, (boardBackground.getSize().y-view->getSize().y/11)/2);
-
-    //Allocates the cell matrix
-    boardCells = new Cell**[diff->columns];
-    for (int i = 0; i < diff->columns; ++i) {
-        boardCells[i] = new Cell*[diff->rows];
-    }
-
-    //Creates temporary cells until the first cell is chosen
-    for (int i = 0; i < diff->columns; ++i) {
-        for (int j = 0; j < diff->rows; ++j) {
-            boardCells[i][j] = new ZeroCell(cellSprites, i, j, gridSize, theme);
-        }
-    }
-
 }
 
 void Board::setBoard(sf::Vector2i mousePos) {
@@ -109,8 +95,49 @@ void Board::setBoard(sf::Vector2i mousePos) {
 }
 
 Board::Board(Difficulty* diff, int gridSize, sf::View* view, sf::Texture* cellSprites,std::map<std::string, sf::Color>* theme)
-: diff(diff), gridSize(gridSize), view(view), cellSprites(cellSprites), goodFlag(0), badFlag(0),
+: diff(diff), gridSize(gridSize), view(view), cellSprites(cellSprites), goodFlag(0), badFlag(0), time(0),
 gameOverBool(false), started(false), left(false), theme(theme){
+    //Allocates the cell matrix
+    boardCells = new Cell**[diff->columns];
+    for (int i = 0; i < diff->columns; ++i) {
+        boardCells[i] = new Cell*[diff->rows];
+    }
+
+    //Creates temporary cells until the first cell is chosen
+    for (int i = 0; i < diff->columns; ++i) {
+        for (int j = 0; j < diff->rows; ++j) {
+            boardCells[i][j] = new ZeroCell(cellSprites, i, j, gridSize, theme);
+        }
+    }
+
+    initBoard();
+}
+
+Board::Board(Difficulty *diff, int gridSize, sf::View *view, sf::Texture *cellSprites, std::map<std::string, sf::Color> *theme, bool load)
+: diff(diff), gridSize(gridSize), view(view), cellSprites(cellSprites), goodFlag(0), badFlag(0),
+  gameOverBool(false), started(true), left(false), theme(theme){
+    std::ifstream ifstream("../../src/Config/save.txt");
+    ifstream >> time >> diff->columns >> diff->rows >> diff->bombs;
+
+    boardCells = new Cell**[diff->columns];
+    for (int i = 0; i < diff->columns; ++i) {
+        boardCells[i] = new Cell*[diff->rows];
+    }
+
+    int type, revealed, flagged;
+    for (int i = 0; i < diff->columns; ++i) {
+        for (int j = 0; j < diff->rows; ++j) {
+            ifstream >> type >> revealed >> flagged;
+            if (type == 0)
+                boardCells[i][j] = new ZeroCell(cellSprites,i,j,gridSize,theme);
+            else if (type == 10)
+                boardCells[i][j] = new BombCell(cellSprites,i,j,gridSize,theme);
+            else
+                boardCells[i][j] = new NumCell(cellSprites,i,j,gridSize,type,theme);
+            boardCells[i][j]->loadCell(revealed, flagged, type);
+        }
+    }
+
     initBoard();
 }
 
@@ -190,6 +217,16 @@ void Board::drawBoard(sf::RenderTarget *target) {
     for (int i = 0; i < diff->columns; ++i) {
         for (int j = 0; j < diff->rows; ++j) {
             boardCells[i][j]->drawCell(target);
+        }
+    }
+}
+
+void Board::saveGame() {
+    std::ofstream of("../../src/Config/save.txt");
+    of << time << " " << diff->columns << " " << diff->rows << " " << diff->bombs << std::endl;
+    for (int i = 0; i < diff->columns; ++i) {
+        for (int j = 0; j < diff->rows; ++j) {
+            of << boardCells[i][j]->getType() << " " << boardCells[i][j]->getRevealed() << " " << boardCells[i][j]->getFlagged() << std::endl;
         }
     }
 }

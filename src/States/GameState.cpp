@@ -28,7 +28,7 @@ void GameState::initButtons() { //Creates the buttons
 
 GameState::GameState(sf::RenderWindow *window, std::map<std::string, int> *supportedKeys, std::stack<State*>* states, Difficulty *difficulty, bool load)
 : State(window, supportedKeys, states), isShiftPressed(false), gridSize(12), currentDifficulty (difficulty),
-correctFlag(0), wrongFlag(0), gameEnded(false), win(false), bombCounter(currentDifficulty->bombs), clock(0){
+correctFlag(0), wrongFlag(0), gameEnded(false), win(false), clock(0){
     //Init functions
     initFonts();
     initKeybinds();
@@ -88,8 +88,19 @@ correctFlag(0), wrongFlag(0), gameEnded(false), win(false), bombCounter(currentD
     gameOverText.setString("Game Over");
     gameOverText.setPosition(window->getSize().x/2 - youWinText.getGlobalBounds().width/2, 30);
 
+    //Sets clock text's parameters
+    clockText.setFont(font);
+    clockText.setFillColor(sf::Color::Black);
+    clockText.setCharacterSize(60);
+    clockText.setPosition(1600, 30);
+
     //Creates a new board
-    board = new Board(currentDifficulty, gridSize, &view, &cellSprites, &colorThemes.at(activeTheme));
+    if (!load)
+        board = new Board(currentDifficulty, gridSize, &view, &cellSprites, &colorThemes.at(activeTheme));
+    else
+        board = new Board(currentDifficulty, gridSize, &view, &cellSprites, &colorThemes.at(activeTheme), true);
+
+    clock = board->getTime();
 }
 
 GameState::~GameState() {
@@ -107,10 +118,6 @@ void GameState::checkEndGameCondition() {
         gameEnded = true;
     } else if (board->gameOver())
         gameEnded = true;
-}
-
-void GameState::saveGame() {
-
 }
 
 void GameState::handleInput(const float &dt) {
@@ -163,13 +170,16 @@ void GameState::handleButtons() { //Updates and handles buttons
     if (this->buttons["RETRY"]->isPressed()){
         gameEnded = false;
         win = false;
+        clock = 0;
+        timerClock.restart();
         delete board;
         board = new Board(currentDifficulty, gridSize, &view, &cellSprites, &colorThemes.at(activeTheme));
     }
 
     //Save
     if (this->buttons["SAVE"]->isPressed()){
-
+        board->setTime((int)timerClock.getElapsedTime().asSeconds() + clock);
+        board->saveGame();
     }
 }
 
@@ -194,8 +204,17 @@ void GameState::updateBombCounter() {
     bombCounterIcon.setPosition(bombCounterText.getPosition().x + bombCounterText.getGlobalBounds().width + 15, 30);
 }
 
-void GameState::updateClock(const float &dt) {
-
+void GameState::updateClock() {
+    if (!board->getStarted())
+        timerClock.restart();
+    if (clock >= 99*60)
+        clock = 0;
+    int time;
+    time = (int)timerClock.getElapsedTime().asSeconds() + clock;
+    std::stringstream ss;
+    ss << std::setfill('0') << std::setw(2) << std::fixed << std::setprecision(0);
+    ss << time/60 << std::setw(1) << ":" << std::setw(2) << time%60;
+    clockText.setString(ss.str());
 }
 
 void GameState::update(const float &dt) {
@@ -203,6 +222,7 @@ void GameState::update(const float &dt) {
     this->updateButtons();
     this->handleInput(dt);
     updateBombCounter();
+    updateClock();
 
     //Disables board interaction if mouse is not in board, is over ui elements or the game is over
     if (mousePosWindow.y > 120 && board->boardBackground.getGlobalBounds().contains(mousePosView) && !gameEnded)
@@ -234,8 +254,10 @@ void GameState::render(sf::RenderTarget *target) {
     }
     target->draw(bombCounterText);
     target->draw(bombCounterIcon);
+    target->draw(clockText);
 
     //Debug
-    renderDebug(target);
+    if(true)
+        renderDebug(target);
 }
 

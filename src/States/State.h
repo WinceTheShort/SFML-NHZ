@@ -14,6 +14,9 @@
 #include <stack>
 #include <map>
 #include <vector>
+#include <fstream>
+#include <iomanip>
+#include <filesystem>
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"

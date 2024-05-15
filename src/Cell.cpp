@@ -69,7 +69,7 @@ void Cell::drawCell(sf::RenderTarget* target) {
     target->draw(sprite);
 }
 
-void Cell::loadCell(bool revealed, bool flagged) {
+void Cell::loadCell(bool revealed, bool flagged, int value) {
     this->revealed = revealed;
     if (revealed)
         changeSprite(type);
@@ -146,6 +146,16 @@ value(value){
 
 NumCell::~NumCell() {
 
+}
+
+void NumCell::loadCell(bool revealed, bool flagged, int value){
+    this->value = value;
+    this->revealed = revealed;
+    if (revealed)
+        changeSprite(type);
+    this->flagged = flagged;
+    if (flagged)
+        changeSprite(FLAG);
 }
 
 void NumCell::reveal(Board *board) {
